@@ -1,0 +1,38 @@
+<% layout ("layouts/boilerplate.ejs") %>
+<%- include("../layouts/partials/flash.ejs") %>
+    <h1>All Campgrounds</h1>
+    <%let i=3 %>
+        <% for (let campground of campgrounds){ %>
+            <% if(i%3===0) { %>
+                <div class="row">
+                    <% } %>
+                        <div class="col-4">
+                            <div class="card mx-1 my-4 bg-success">
+                                <img src="<%=campground.photo%>" alt="">
+                                <div class="card-body">
+                                    <a href="campgrounds/<%=campground._id%>" class="text-decoration-none text-dark">
+                                        <h3 class="card-title d-inline">
+                                            <%= campground.name %>
+                                        </h3>
+                                    </a>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <b>
+                                            <%= campground.price %> zł
+                                        </b>/doba
+                                    </li>
+                                    <li class="list-group-item">
+                                        koordynaty <i>
+                                            <%= campground.location %>
+                                        </i>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <% if(i%3===2) { %>
+                </div>
+                <% } %>
+                    <% i++ %>
+                        <%}%>

@@ -1,0 +1,10 @@
+<% if (message && message.length ){ %>
+    <div class="alert <%if (message[0] === "Success!") {%>
+    alert-success
+    <%} else{%>
+    alert-danger <%}%>
+    alert-dismissible fade show" role="alert">
+        <strong><%=message[0]%></strong> <%=message[1] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+<% } %>
