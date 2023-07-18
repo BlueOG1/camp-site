@@ -1,0 +1,33 @@
+<% layout ("layouts/boilerplate.ejs") %>
+<%- include("../layouts/partials/flash.ejs") %>
+    <h1>Registration</h1>
+    <div class="mt-5">
+        <form action="/account/register" method="post" id="newAccount" class="d-flex ms-auto me-auto needs-validation"
+            novalidate>
+            <div class="d-flex flex-column">
+                <div>
+                    <label for="username" class="d-block mb-0">Username</label>
+                    <input type="text" name="username" id="username" required class="form-control form-control-sm">
+                    <div class="invalid-feedback">
+                        Please provide a valid username.
+                    </div>
+                    <div class="valid-feedback">
+                        Now it looks good!
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="d-block mt-2 mb-0">Password</label>
+                    <input type="password" name="password" id="password" required class="form-control form-control-sm">
+                    <div class="invalid-feedback">
+                        Please provide a valid username.
+                    </div>
+                    <div class="valid-feedback">
+                        Now it looks good!
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button type="submit" form="newAccount" class="d-inline btn btn-success mt-3">Register</button>
+    </div>
+
+    <script src="/scripts/bootstrap/validateforms.js"></script>

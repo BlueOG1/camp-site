@@ -16,17 +16,17 @@ const { campgroundJoiSchema } = require("./joi/schemas/campgroundJoiSchema.js")
 const { reviewJoiSchema } = require("./joi/schemas/reviewJoiSchema.js")
 const campgroundRouter = require("./routers/campgroundRouter.js")
 const reviewRouter = require("./routers/reviewRouter.js")
+const accountRouter = require("./routers/accountRouter.js")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const flash = require("connect-flash")
-//const multer = require("multer");
-//const {GridFsStorage} = require("multer-gridfs-storage");
+
 app.use(methodOverride('_method'))
 app.set("views", path.join(__dirname, "views"));
 app.set("view enginge", "ejs");
 app.engine("ejs", ejsMateEngine)
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname,"public")))
+app.use(express.static(path.join(__dirname, "public")))
 
 const mongoDB = "mongodb://localhost:27017/yelpcampdb";
 const connect = mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -41,63 +41,29 @@ app.listen(3000, () => {
     console.log("listetning on port 3000");
 })
 
-const sessionConfig ={
+const sessionConfig = {
     secret: "randomKey",
     resave: false,
     saveUninitialized: true,
-    cookie:{
+    cookie: {
         httpOnly: true,
-        expires: Date.now() + (60*60*24),
-        maxAge: 60*60*24
+        expires: Date.now() + (60 * 60 * 24),
+        maxAge: 60 * 60 * 24
     }
 }
 app.use(session(sessionConfig))
 
 app.use(flash())
 
-app.use((req,res, next) => {
+app.use((req, res, next) => {
     res.locals.message = req.flash("message");
     next()
 })
 
-/*
-const storage = new GridFsStorage({ url: mongoDB})
-const upload = multer ({storage})
-mongoose.connection.once('open', () => {
-    // initialize stream
-    gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db);
-});
-
-app.get("/upload", (req, res, next) => {
-    res.render("./testing/test.ejs")
-})
-
-app.post("/upload", upload.single('uploadedFile'), (req,res,next) => {
-    console.log(req.file.id)
-    res.send("uploaded successfully")
-})
-
-app.get("/uploaded", (req, res, next) => {
-        res.render("./testing/test2.ejs")
-})
-    
-app.get("/api/photo", (req, res, next) => {
-    gfs.find({filename: "9aa69bb9ce2bde1f904ec40cf1dc1632"}).toArray()
-    .then(() => {
-        const photoReadStream = gfs.openDownloadStreamByName("9aa69bb9ce2bde1f904ec40cf1dc1632")
-        photoReadStream.pipe(res)
-    })
-
-})
-*/
-
-
-
-
 
 app.use("/campgrounds", campgroundRouter)
 app.use("/campgrounds/:id/reviews", reviewRouter)
-
+app.use("/account", accountRouter)
 
 app.get("/error", (req, res) => {
     res.render("./errors/error.ejs")
