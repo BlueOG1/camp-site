@@ -27,31 +27,22 @@ router.get("/register", (req, res, next) => {
 })
 
 router.post("/register", async (req, res, next) => {
-    const newUser = await new User({
-        username: req.body.username, password: await bcryptHasher(req.body.password)
-    }).save()
-    req.flash("message", ["Success!", "Account has been created successfully!"])
-    res.redirect("/campgrounds")
+    const hashPassword = async (pw = req.body.password) => {
+        const salt = await bcrypt.genSalt(12)
+        hash = bcrypt.hash(pw, salt)
+        return (hash)
+    }
+    const hashedPw = await hashPassword();
+    console.log(hashedPw)
+    const correctpassword = "Felek"
+    console.log(await bcrypt.compare(correctpassword, hashedPw))
+    res.redirect("/account/register")
 })
 
 router.get("/login", async (req, res, next) => {
     res.render("../views/account/login.ejs")
 })
 
-router.post("/login", async (req, res, next) => {
-    const loggingUser = await User.findOne({ username: req.body.username })
-    console.log(loggingUser)
-    if (!loggingUser) {
-        req.flash("message", ["Failed!", "Password or username incorrect"])
-        return res.redirect("/account/login")
-    }
-    if (await bcryptCompare(req.body.password, loggingUser.password) && req.body.username === loggingUser.username) {
-        console.log("Logged in!")
-        res.redirect("/account/myaccount")
-    } else {
-        req.flash("message", ["Failed!", "Password or username incorrect"])
-        res.redirect("/account/login")
-    }
-})
+
 
 module.exports = router;
